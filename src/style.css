@@ -1,0 +1,519 @@
+:root {
+  font-size: 14px;
+}
+
+body {
+  margin: 0;
+  padding: 1rem;
+  font-family: 'Poppins', sans-serif;
+  background: #0f0f0f;
+  color: #fff;
+}
+
+.container {
+  max-width: 100%;
+  max-width: 960px;
+  margin: auto;
+  background: #1a1a1a;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 0 20px #00f0ff;
+}
+
+h1{
+  text-align: center;
+  color: #00f0ff;
+  text-shadow: 0 0 10px #00f0ff;
+  font-size: 2.5rem;
+}
+
+h2 {
+  text-align: center;
+  color: #00f0ff;
+  text-shadow: 0 0 10px #00f0ff;
+  font-size: 1.5rem;
+}
+
+.visually-hidden {
+  position: absolute;
+  left: -9999px;
+}
+
+/* Income Update Section */
+.income-edit {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0;
+  padding: 1rem;
+  background: #222;
+  border-radius: 10px;
+  box-shadow: 0 0 20px #00f0ff;
+}
+
+.income-edit input {
+  flex: 1 1 300px;
+  padding: 1rem;
+  font-size: 1.4rem;
+  border-radius: 8px;
+  border: 2px solid #00f0ff;
+  background: #000;
+  color: #fff;
+  box-shadow: 0 0 10px #00f0ff;
+}
+
+.income-edit input:focus {
+  outline: 3px solid #ff0;
+}
+
+.income-edit button {
+  padding: 1rem 2rem;
+  font-size: 1.4rem;
+  background: #00f0ff;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 0 10px #00f0ff;
+  transition: transform 0.2s ease;
+}
+
+.income-edit button:hover,
+.income-edit button:focus {
+  transform: scale(1.01);
+  outline: 3px solid #ff0;
+}
+
+/* KPI Tiles */
+.kpi-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.kpi-tile {
+  flex: 1 1 30%;
+  background: #0f0f0f;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 0 10px #00f0ff;
+  color: #fff;
+  font-size: 1.2rem;
+  outline: none;
+}
+
+.kpi-tile:focus {
+  box-shadow: 0 0 15px #ff0;
+  border: 2px solid #ff0;
+}
+
+/* Chart Section */
+.chart-wrapper {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #000;
+  border-radius: 10px;
+  box-shadow: 0 0 15px #00f0ff;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+canvas {
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* Normalize date input appearance */
+input[type="date"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: #000;
+  color: #fff;
+  padding: 0.7rem;
+  font-size: clamp(0.7rem, 1vw + 0.4rem, 1rem);
+  border: 2px solid #00f0ff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px #00f0ff;
+  flex: 1 1 220px;
+  min-width: 140px;
+}
+
+input[type="date"]::placeholder {
+  color: #ccc;
+  font-size: 0.7rem;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+input[type="date"]:focus {
+  outline: 3px solid #ff0;
+}
+
+input[type="number"]#amount::-webkit-inner-spin-button,
+input[type="number"]#amount::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#savings-form input,
+#savings-form select {
+  margin: 0.5rem;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: 2px solid #00f0ff;
+  background: #000;
+  color: #fff;
+  box-shadow: 0 0 10px #00f0ff;
+}
+
+#savings-form button {
+  padding: 0.8rem 1.2rem;
+  background: #00f0ff;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 10px #00f0ff;
+}
+
+.savings-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.savings-table th,
+.savings-table td {
+  padding: 0.5rem;
+  border: 1px solid #00f0ff;
+  color: #fff;
+  text-align: center;
+}
+
+
+#expense-form input {
+  margin: 0.5rem;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: 2px solid #ff4c4c;
+  background: #000;
+  color: #fff;
+  box-shadow: 0 0 10px #ff4c4c;
+}
+
+#expense-form button {
+  padding: 0.8rem 1.2rem;
+  background: #ff4c4c;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 10px #ff4c4c;
+}
+
+#expense-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+#expense-table th,
+#expense-table td {
+  padding: 0.5rem;
+  border: 1px solid #ff4c4c;
+  color: #fff;
+  text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Expense Form */
+form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  justify-content: center;
+}
+
+form input, form button {
+  padding: 0.8rem;
+  font-size: clamp(0.7rem, 1vw + 0.4rem, 1rem);
+  border: none;
+  border-radius: 5px;
+  flex: 1 1 220px;
+  min-width: 150px;
+  background: #000;
+  color: #fff;
+  border: 2px solid #00f0ff;
+  box-shadow: 0 0 10px #00f0ff;
+}
+
+form input::placeholder {
+  color: #ccc;
+  font-size: 0.8rem;
+}
+
+form input:focus, form button:focus {
+  outline: 3px solid #ff0;
+}
+
+form button {
+  background: #00f0ff;
+  color: #000;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+form button:hover {
+  transform: scale(1.01);
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+th, td {
+  padding: 0.75rem;
+  font-size: clamp(0.5rem, 1vw + 0.5rem, 1rem);
+  border-bottom: 1px solid #444;
+  text-align: left;
+}
+
+/* Income History */
+.history {
+  margin-top: 2rem;
+}
+
+.goal-section {
+  margin: 2rem auto;
+  max-width: 500px;
+  text-align: center;
+  color: #00f0ff;
+  text-shadow: 0 0 5px #00f0ff;
+}
+
+.goal-section h3 {
+  margin-bottom: 0.5rem;
+}
+
+.goal-section h4 {
+  margin-top: 1rem;
+  font-weight: normal;
+  color: #00ffcc;
+}
+
+.goal-edit input {
+  padding: 0.8rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 2px solid #00f0ff;
+  background: #000;
+  color: #fff;
+  box-shadow: 0 0 10px #00f0ff;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  display: block;
+  text-align: center;
+}
+
+.goal-edit input:focus {
+  outline: 3px solid #ff0;
+}
+
+.progress-bar-wrapper {
+  margin-top: 1rem;
+}
+
+.progress-bar {
+  background: #222;
+  border: 2px solid #00f0ff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #00f0ff;
+  height: 30px;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill {
+  background: linear-gradient(90deg, #00f0ff, #00ff99);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  font-weight: bold;
+  transition: width 0.3s ease;
+}
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: #1a1a1a;
+  color: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #ff4c4c;
+  text-align: center;
+  max-width: 400px;
+}
+
+.modal-content h3 {
+  margin-bottom: 1rem;
+  color: #ff4c4c;
+}
+
+.modal-content p {
+  margin-bottom: 1rem;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.modal-actions button {
+  padding: 0.6rem 1.2rem;
+  background: #ff4c4c;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 10px #ff4c4c;
+}
+
+
+/* Ultra-small screens */
+@media (max-width: 200px) {
+  h1 {
+    font-size: 0.8rem;
+  }
+
+h2 {
+    font-size: 0.7rem;
+  }
+
+  input, button {
+    font-size: 0.6rem;
+    padding: 0.5rem;
+  }
+
+  .income-edit input,
+  .income-edit button {
+    font-size: 0.6rem;
+  }
+
+  .kpi-tile {
+    font-size: 0.6rem;
+    padding: 0.5rem;
+  }
+
+  .kpi-container {
+    gap: 0.5rem;
+  }
+
+  .container {
+    gap: 0.5rem;
+  }
+
+  form input, form button {
+    font-size: 0.6rem;
+    padding: 0.4rem;
+    flex: 1 1 100%;
+    min-width: unset;
+  }
+
+  form input::placeholder {
+    font-size: 0.6rem;
+  }
+
+  th, td {
+    font-size: 0.5rem;
+    padding: 0.2rem;
+  }
+}
+
+/* Mobile and tablets */
+@media (max-width: 600px) {
+  .kpi-tile, input, button {
+    flex: 1 1 100%;
+  }
+
+  .kpi-container {
+    gap: 0.5rem;
+  }
+
+  form input, form button {
+    font-size: 0.8rem;
+    padding: 0.6rem;
+    flex: 1 1 100%;
+    min-width: unset;
+  }
+
+  form input::placeholder {
+    font-size: 0.7rem;
+  }
+
+  th, td {
+    font-size: 0.8rem;
+    padding: 0.4rem;
+  }
+}
+
+/* Medium screens */
+@media (min-width: 601px) and (max-width: 960px) {
+  th, td {
+    font-size: 0.9rem;
+    padding: 0.6rem;
+  }
+}
+
+/* Large screens */
+@media (min-width: 961px) {
+  th, td {
+    font-size: 1rem;
+    padding: 0.75rem;
+  }
+}
