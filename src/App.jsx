@@ -8,8 +8,8 @@ import SavingsTable from './components/SavingsTable';
 
 function App() {
   const [income, setIncome] = useState(() => {
-    const stored = parseFloat(localStorage.getItem('income'));
-    return !isNaN(stored) ? stored : 10000;
+    const stored = localStorage.getItem('income');
+    return stored ? parseFloat(stored) : '';
   });
 
   const [expenseList, setExpenseList] = useState(() => {
@@ -49,10 +49,20 @@ function App() {
     .filter((entry) => entry.type === 'expense')
     .reduce((sum, entry) => sum + entry.amount, 0);
 
-  const incomeBalance = income - personalSavings - expenseSavings;
+  const [incomeBalance, setIncomeBalance] = useState(() => {
+    const initial = income - expenses - personalSavings - expenseSavings;
+    return !isNaN(initial) ? initial : 0;
+  });
 
   useEffect(() => {
-    localStorage.setItem('income', income);
+    const updatedBalance = income - expenses - personalSavings - expenseSavings;
+    if (!isNaN(updatedBalance)) {
+      setIncomeBalance(updatedBalance);
+    }
+  }, [income, expenses, personalSavings, expenseSavings]);
+
+  useEffect(() => {
+    if (income !== '') localStorage.setItem('income', income);
     localStorage.setItem('expenses', expenses);
     localStorage.setItem('expenseList', JSON.stringify(expenseList));
     localStorage.setItem('savingsList', JSON.stringify(savingsList));
@@ -78,6 +88,7 @@ function App() {
         personalSavings={personalSavings}
         expenseSavings={expenseSavings}
         incomeBalance={incomeBalance}
+        setIncomeBalance={setIncomeBalance}
       />
       <ExpenseForm
         expenseList={expenseList}
@@ -86,11 +97,15 @@ function App() {
         expenseSavings={expenseSavings}
         savingsList={savingsList}
         setSavingsList={setSavingsList}
+        income={income}
+        setIncomeBalance={setIncomeBalance}
       />
       <ExpenseTable expenseList={expenseList} />
       <SavingsForm
         savingsList={savingsList}
         setSavingsList={setSavingsList}
+        income={income}
+        setIncomeBalance={setIncomeBalance}
       />
       <SavingsTable savingsList={savingsList} />
     </main>

@@ -1,10 +1,6 @@
 import { useState } from 'react';
 
 function SavingsTable({ savingsList }) {
-  const [filterCategory, setFilterCategory] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-
   const personal = savingsList.filter((entry) => entry.type === 'personal');
   const expense = savingsList.filter((entry) => entry.type === 'expense');
 
@@ -12,36 +8,22 @@ function SavingsTable({ savingsList }) {
     new Set(expense.map((entry) => entry.category || 'Uncategorized'))
   );
 
-  const filteredLogs = expense.flatMap((entry) => {
-    return (entry.deductionLog || []).filter((log) => {
-      const logDate = new Date(log.date);
-      const matchCategory = !filterCategory || log.category === filterCategory;
-      const matchStart = !startDate || logDate >= new Date(startDate);
-      const matchEnd = !endDate || logDate <= new Date(endDate);
-      return matchCategory && matchStart && matchEnd;
-    });
-  });
+  const totalPersonal = personal.reduce((sum, entry) => sum + entry.amount, 0);
+  const totalExpense = expense.reduce((sum, entry) => sum + entry.amount, 0);
 
-  const exportCSV = () => {
-    const headers = ['Date', 'Category', 'Amount'];
-    const rows = filteredLogs.map((log) => [log.date, log.category, log.amount]);
-    const csvContent = [headers, ...rows]
-      .map((row) => row.join(','))
-      .join('\n');
-
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'deduction_logs.csv';
-    link.click();
-    URL.revokeObjectURL(url);
-  };
+  const [showDeductions, setShowDeductions] = useState(false);
 
   return (
     <section className="savings-overview">
       <h2>💼 Savings Overview</h2>
+
+      <div className="summary-totals">
+        <p><strong>Total Personal Savings:</strong> ₱{totalPersonal.toFixed(2)}</p>
+        <p><strong>Total Expense Savings:</strong> ₱{totalExpense.toFixed(2)}</p>
+        <button onClick={() => setShowDeductions(!showDeductions)}>
+          {showDeductions ? 'Hide' : 'Show'} Deduction History
+        </button>
+      </div>
 
       <h3>Personal Savings</h3>
       <table>
@@ -49,6 +31,7 @@ function SavingsTable({ savingsList }) {
           <tr>
             <th>Date</th>
             <th>Amount</th>
+            <th>Note</th>
           </tr>
         </thead>
         <tbody>
@@ -56,73 +39,76 @@ function SavingsTable({ savingsList }) {
             <tr key={index}>
               <td>{entry.date}</td>
               <td>₱{entry.amount.toFixed(2)}</td>
+              <td>
+                {(entry.savingsLog || []).map((log, i) => (
+                  <div key={i}>
+                    <small>{log.date}</small> — ₱{log.amount.toFixed(2)} ({log.note})
+                  </div>
+                ))}
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
 
       <h3>Expense Savings by Category</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Category</th>
-            <th>Total Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          {expenseCategories.map((cat, index) => {
-            const total = expense
-              .filter((entry) => entry.category === cat)
-              .reduce((sum, entry) => sum + entry.amount, 0);
-            return (
-              <tr key={index}>
-                <td>{cat}</td>
-                <td>₱{total.toFixed(2)}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      {expenseCategories.map((cat, index) => {
+        const entries = expense.filter((entry) => entry.category === cat);
+        const total = entries.reduce((sum, entry) => sum + entry.amount, 0);
+        const savingsLogs = entries.flatMap((entry) => entry.savingsLog || []);
+        const deductionLogs = entries.flatMap((entry) => entry.deductionLog || []);
+        const remaining = entries.reduce((sum, entry) => sum + entry.amount, 0);
 
-      <h3>📜 Deduction Logs</h3>
-      <div className="filters">
-        <select value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)}>
-          <option value="">All Categories</option>
-          {expenseCategories.map((cat, index) => (
-            <option key={index} value={cat}>{cat}</option>
-          ))}
-        </select>
-        <input
-          type="date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-        />
-        <input
-          type="date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-        />
-        <button onClick={exportCSV}>Export CSV</button>
-      </div>
+        return (
+          <div key={index} style={{ marginBottom: '2rem' }}>
+            <h4 style={{ color: '#00ff88', marginBottom: '0.5rem' }}>
+              {cat} — Remaining: ₱{remaining.toFixed(2)}
+            </h4>
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Amount</th>
+                  <th>Note</th>
+                </tr>
+              </thead>
+              <tbody>
+                {savingsLogs.map((log, i) => (
+                  <tr key={i}>
+                    <td>{log.date}</td>
+                    <td>₱{log.amount.toFixed(2)}</td>
+                    <td>{log.note}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Category</th>
-            <th>Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredLogs.map((log, index) => (
-            <tr key={index}>
-              <td>{log.date}</td>
-              <td>{log.category}</td>
-              <td>₱{log.amount.toFixed(2)}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+            {showDeductions && deductionLogs.length > 0 && (
+              <>
+                <h5 style={{ marginTop: '1rem', color: '#ff4c4c' }}>Deductions</h5>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Amount</th>
+                      <th>Category</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {deductionLogs.map((log, i) => (
+                      <tr key={i}>
+                        <td>{log.date}</td>
+                        <td>-₱{log.amount.toFixed(2)}</td>
+                        <td>{log.category}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </>
+            )}
+          </div>
+        );
+      })}
     </section>
   );
 }

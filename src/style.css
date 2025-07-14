@@ -167,25 +167,6 @@ input[type="number"]#amount::-webkit-outer-spin-button {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #savings-form input,
 #savings-form select {
   margin: 0.5rem;
@@ -453,19 +434,6 @@ th, td {
 .history {
   margin-top: 2rem;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 .goal-section {

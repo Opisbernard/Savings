@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function SavingsForm({ savingsList, setSavingsList }) {
+function SavingsForm({ savingsList, setSavingsList, income, setIncomeBalance }) {
   const [amount, setAmount] = useState('');
   const [type, setType] = useState('personal');
   const [category, setCategory] = useState('');
@@ -26,14 +26,12 @@ function SavingsForm({ savingsList, setSavingsList }) {
       );
 
       if (existingIndex !== -1) {
-        // 🚨 Show modal before adding to existing category
         setPendingAmount(parsedAmount);
         setPendingCategory(trimmedCategory);
         setShowModal(true);
         return;
       }
 
-      // ➕ Create new category
       const newEntry = {
         date: now,
         timestamp: Date.now(),
@@ -49,9 +47,16 @@ function SavingsForm({ savingsList, setSavingsList }) {
           },
         ],
       };
-      setSavingsList([...savingsList, newEntry]);
+      const updatedList = [...savingsList, newEntry];
+      setSavingsList(updatedList);
+
+      // 🔄 Update income balance
+      const totalSavings = updatedList.reduce((sum, entry) => sum + entry.amount, 0);
+      const updatedIncomeBalance = income - totalSavings;
+      if (!isNaN(updatedIncomeBalance)) {
+        setIncomeBalance(updatedIncomeBalance);
+      }
     } else {
-      // Personal savings — always add new
       const newEntry = {
         date: now,
         timestamp: Date.now(),
@@ -67,7 +72,15 @@ function SavingsForm({ savingsList, setSavingsList }) {
           },
         ],
       };
-      setSavingsList([...savingsList, newEntry]);
+      const updatedList = [...savingsList, newEntry];
+      setSavingsList(updatedList);
+
+      // 🔄 Update income balance
+      const totalSavings = updatedList.reduce((sum, entry) => sum + entry.amount, 0);
+      const updatedIncomeBalance = income - totalSavings;
+      if (!isNaN(updatedIncomeBalance)) {
+        setIncomeBalance(updatedIncomeBalance);
+      }
     }
 
     setAmount('');
@@ -97,6 +110,13 @@ function SavingsForm({ savingsList, setSavingsList }) {
         },
       ];
       setSavingsList(updatedList);
+
+      // 🔄 Update income balance
+      const totalSavings = updatedList.reduce((sum, entry) => sum + entry.amount, 0);
+      const updatedIncomeBalance = income - totalSavings;
+      if (!isNaN(updatedIncomeBalance)) {
+        setIncomeBalance(updatedIncomeBalance);
+      }
     }
 
     setShowModal(false);

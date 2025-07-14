@@ -6,7 +6,9 @@ function ExpenseForm({
   setExpenses,
   expenseSavings,
   savingsList,
-  setSavingsList
+  setSavingsList,
+  income,
+  setIncomeBalance
 }) {
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('');
@@ -76,6 +78,13 @@ function ExpenseForm({
     setExpenseList(updatedExpenses);
     setExpenses(updatedExpenses.reduce((sum, entry) => sum + entry.amount, 0));
     setSavingsList(updatedSavings);
+
+    // 🔄 Update income balance
+    const totalSavings = updatedSavings.reduce((sum, entry) => sum + entry.amount, 0);
+    const updatedIncomeBalance = income - parsedAmount - totalSavings;
+    if (!isNaN(updatedIncomeBalance)) {
+      setIncomeBalance(updatedIncomeBalance);
+    }
 
     setAmount('');
     setCategory('');
