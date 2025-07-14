@@ -41,7 +41,6 @@ function App() {
     }
   });
 
-  // 💼 Separate savings totals
   const personalSavings = savingsList
     .filter((entry) => entry.type === 'personal')
     .reduce((sum, entry) => sum + entry.amount, 0);

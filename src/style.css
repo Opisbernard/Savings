@@ -166,6 +166,26 @@ input[type="number"]#amount::-webkit-outer-spin-button {
   margin: 0;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #savings-form input,
 #savings-form select {
   margin: 0.5rem;
@@ -203,52 +223,174 @@ input[type="number"]#amount::-webkit-outer-spin-button {
 }
 
 
-#expense-form input {
-  margin: 0.5rem;
-  padding: 0.8rem;
+/* Expense Form Enhancements */
+#expense-form {
+  background: #1a1a1a;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 0 15px #00f0ff;
+  margin-bottom: 2rem;
+}
+
+#expense-form h2 {
+  color: #00ff88;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-size: 1.4rem;
+  text-shadow: 0 0 5px #00ff88;
+}
+
+#expense-form input,
+#expense-form select,
+#expense-form button {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
   border-radius: 8px;
-  border: 2px solid #ff4c4c;
+  border: 2px solid #00f0ff;
   background: #000;
   color: #fff;
-  box-shadow: 0 0 10px #ff4c4c;
+  box-shadow: 0 0 10px #00f0ff;
+}
+
+#expense-form input::placeholder {
+  color: #aaa;
 }
 
 #expense-form button {
-  padding: 0.8rem 1.2rem;
-  background: #ff4c4c;
+  background: #00ff88;
   color: #000;
-  border: none;
-  border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
-  box-shadow: 0 0 10px #ff4c4c;
+  transition: background 0.3s ease;
 }
 
-#expense-table {
+#expense-form button:hover {
+  background: #00cc66;
+}
+
+/* Expense History Section */
+.expense-history {
+  background: #1a1a1a;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 0 15px #00f0ff;
+  color: #fff;
+}
+
+.expense-history h2 {
+  color: #00f0ff;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-size: 1.4rem;
+  text-shadow: 0 0 5px #00f0ff;
+}
+
+.expense-history .total-expenses {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #00ff88;
+  text-align: center;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 5px #00ff88;
+}
+
+.expense-history table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
 }
 
-#expense-table th,
-#expense-table td {
-  padding: 0.5rem;
-  border: 1px solid #ff4c4c;
+.expense-history th,
+.expense-history td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #444;
+  text-align: left;
+  background: #2a2a2a;
   color: #fff;
-  text-align: center;
+}
+
+.expense-history th {
+  background-color: #000;
+  color: #00f0ff;
+  font-weight: 500;
+}
+
+.expense-history td.amount {
+  color: #00ff88;
+  font-weight: bold;
+}
+
+.expense-history td.large-expense {
+  color: #ff4c4c;
+  font-weight: bold;
+  text-shadow: 0 0 5px #ff4c4c;
+}
+
+
+#expense-form select {
+  background: #000;
+  color: #fff;
+  border: 2px solid #00f0ff;
+  box-shadow: 0 0 10px #00f0ff;
+  border-radius: 8px;
+  font-size: 1rem;
+  padding: 0.8rem 1rem;
+  appearance: none;
+  cursor: pointer;
+}
+
+#expense-form select:focus {
+  outline: 3px solid #ff0;
+}
+
+#expense-form option {
+  background: #1a1a1a;
+  color: #fff;
 }
 
 
 
+/* Deduction Logs Section */
+.savings-overview {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #1e1e1e;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
 
+.savings-overview h2,
+.savings-overview h3 {
+  margin-bottom: 1rem;
+  color: #00ff88;
+  font-weight: 600;
+}
 
+.savings-overview table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+}
 
+.savings-overview th,
+.savings-overview td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #444;
+  text-align: left;
+}
 
+.savings-overview th {
+  background-color: #2a2a2a;
+  color: #00f0ff;
+  font-weight: 500;
+}
 
-
-
-
-
+.savings-overview td {
+  background-color: #2e2e2e;
+}
 
 
 /* Expense Form */
@@ -311,6 +453,20 @@ th, td {
 .history {
   margin-top: 2rem;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .goal-section {
   margin: 2rem auto;
@@ -422,6 +578,38 @@ th, td {
   font-weight: bold;
   cursor: pointer;
   box-shadow: 0 0 10px #ff4c4c;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+.filters select,
+.filters input[type="date"],
+.filters button {
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  border: none;
+  background: #333;
+  color: #fff;
+  font-size: 1rem;
+  box-shadow: 0 0 5px #00f0ff;
+}
+
+.filters button {
+  background: #00ff88;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.filters button:hover {
+  background: #00cc66;
 }
 
 

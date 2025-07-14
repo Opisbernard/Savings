@@ -12,9 +12,11 @@ function SavingsForm({ savingsList, setSavingsList }) {
 
     const newEntry = {
       date: new Date().toLocaleString(),
+      timestamp: Date.now(),
       amount: parsedAmount,
       type,
       category: type === 'expense' ? category.trim() : null,
+      deductionLog: [], // 🧾 Initialize empty log
     };
 
     setSavingsList([...savingsList, newEntry]);

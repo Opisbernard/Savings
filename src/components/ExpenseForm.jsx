@@ -13,31 +13,60 @@ function ExpenseForm({
   const [note, setNote] = useState('');
   const [showModal, setShowModal] = useState(false);
 
+  const expenseCategories = Array.from(
+    new Set(
+      savingsList
+        .filter((entry) => entry.type === 'expense' && entry.amount > 0 && entry.category)
+        .map((entry) => entry.category)
+    )
+  );
+
+  const categoryBalance = savingsList
+    .filter((entry) => entry.type === 'expense' && entry.category === category)
+    .reduce((sum, entry) => sum + entry.amount, 0);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const parsedAmount = parseFloat(amount);
     if (!category || isNaN(parsedAmount) || parsedAmount <= 0) return;
 
-    // 🚫 Block if expenseSavings is insufficient
-    if (parsedAmount > expenseSavings) {
+    if (parsedAmount > categoryBalance) {
       setShowModal(true);
       return;
     }
 
-    // 💸 Deduct from expense savings entries
     let remaining = parsedAmount;
+    const now = new Date().toLocaleString();
     const updatedSavings = savingsList.map((entry) => {
-      if (entry.type === 'expense' && remaining > 0 && entry.amount > 0) {
+      if (
+        entry.type === 'expense' &&
+        entry.category === category &&
+        remaining > 0 &&
+        entry.amount > 0
+      ) {
         const deduction = Math.min(entry.amount, remaining);
         remaining -= deduction;
-        return { ...entry, amount: entry.amount - deduction };
+
+        const updatedLog = [
+          ...(entry.deductionLog || []),
+          {
+            amount: deduction,
+            date: now,
+            category,
+          },
+        ];
+
+        return {
+          ...entry,
+          amount: entry.amount - deduction,
+          deductionLog: updatedLog,
+        };
       }
       return entry;
     });
 
-    // ✅ Save expense
     const newEntry = {
-      date: new Date().toLocaleString(),
+      date: now,
       amount: parsedAmount,
       category,
       note,
@@ -48,7 +77,6 @@ function ExpenseForm({
     setExpenses(updatedExpenses.reduce((sum, entry) => sum + entry.amount, 0));
     setSavingsList(updatedSavings);
 
-    // 🔄 Reset form
     setAmount('');
     setCategory('');
     setNote('');
@@ -65,13 +93,18 @@ function ExpenseForm({
           placeholder="Amount"
           required
         />
-        <input
-          type="text"
+        <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          placeholder="Category"
           required
-        />
+        >
+          <option value="">Select Category</option>
+          {expenseCategories.map((cat, index) => (
+            <option key={index} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </select>
         <input
           type="text"
           value={note}
@@ -85,7 +118,9 @@ function ExpenseForm({
         <div className="modal-overlay" role="alertdialog" aria-modal="true">
           <div className="modal-content">
             <h3>🚫 Expense Blocked</h3>
-            <p>You don't have enough balance in your expense savings to cover this expense.</p>
+            <p>
+              You don't have enough balance in your <strong>{category}</strong> savings to cover this expense.
+            </p>
             <div className="modal-actions">
               <button onClick={() => setShowModal(false)}>OK</button>
             </div>
