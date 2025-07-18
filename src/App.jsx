@@ -41,19 +41,36 @@ function App() {
     }
   });
 
-  const personalSavings = savingsList
-    .filter((entry) => entry.type === 'personal')
-    .reduce((sum, entry) => sum + entry.amount, 0);
+  const [personalSavings, setPersonalSavings] = useState(() =>
+    savingsList.filter((entry) => entry.type === 'personal')
+               .reduce((sum, entry) => sum + entry.amount, 0)
+  );
 
-  const expenseSavings = savingsList
-    .filter((entry) => entry.type === 'expense')
-    .reduce((sum, entry) => sum + entry.amount, 0);
+  const [expenseSavings, setExpenseSavings] = useState(() =>
+    savingsList.filter((entry) => entry.type === 'expense')
+               .reduce((sum, entry) => sum + entry.amount, 0)
+  );
 
   const [incomeBalance, setIncomeBalance] = useState(() => {
     const initial = income - expenses - personalSavings - expenseSavings;
     return !isNaN(initial) ? initial : 0;
   });
 
+  // 🔄 Recalculate savings when savingsList changes
+  useEffect(() => {
+    const personal = savingsList
+      .filter((entry) => entry.type === 'personal')
+      .reduce((sum, entry) => sum + entry.amount, 0);
+
+    const expense = savingsList
+      .filter((entry) => entry.type === 'expense')
+      .reduce((sum, entry) => sum + entry.amount, 0);
+
+    setPersonalSavings(personal);
+    setExpenseSavings(expense);
+  }, [savingsList]);
+
+  // 🔄 Recalculate income balance when any relevant value changes
   useEffect(() => {
     const updatedBalance = income - expenses - personalSavings - expenseSavings;
     if (!isNaN(updatedBalance)) {
@@ -61,8 +78,10 @@ function App() {
     }
   }, [income, expenses, personalSavings, expenseSavings]);
 
+  // 💾 Persist to localStorage
   useEffect(() => {
     if (income !== '') localStorage.setItem('income', income);
+    localStorage.setItem('incomeHistory', history);
     localStorage.setItem('expenses', expenses);
     localStorage.setItem('expenseList', JSON.stringify(expenseList));
     localStorage.setItem('savingsList', JSON.stringify(savingsList));
@@ -71,7 +90,7 @@ function App() {
     } else {
       localStorage.removeItem('goal');
     }
-  }, [income, expenses, expenseList, savingsList, goal]);
+  }, [income, expenses, expenseList, savingsList, goal, income]);
 
   return (
     <main className="container" role="main">
@@ -105,6 +124,7 @@ function App() {
         savingsList={savingsList}
         setSavingsList={setSavingsList}
         income={income}
+        incomeBalance={incomeBalance}
         setIncomeBalance={setIncomeBalance}
       />
       <SavingsTable savingsList={savingsList} />
